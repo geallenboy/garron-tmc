@@ -1,0 +1,45 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    // "allowJs": true,                       /* allowJs设置的值为true或false，用来指定是否允许编译js文件，默认是false，即不编译js文件 */
+    // "incremental": true, // TS编译器在第一次编译之后会生成一个存储编译信息的文件，第二次编译会在第一次的基础上进行增量编译，可以提高编译的速度
+    // "tsBuildInfoFile": "./buildFile", // 增量编译文件的存储位置
+    // "jsx": "preserve",                     /* 指定jsx代码用于的开发环境: 'preserve', 'react-native', or 'react'. */
+    "diagnostics": true,                      // 打印诊断信息 
+    "target": "es5",                          /* 编译目标ES版本*/
+    "module": "commonjs",                     /* 编译目标模块系统*/
+    "lib": ["es6"],                           /* 编译过程中需要引入的库文件列表*/
+    "declaration": true,                      /* declaration的值为true或false，用来指定是否在编译的时候生成相应的".d.ts"声明文件。如果设为true，编译每个ts文件之后会生成一个js文件和一个声明文件。但是declaration和allowJs不能同时设为true */
+    // "declarationMap": true,                   /* 值为true或false，指定是否为声明文件.d.ts生成map文件 */
+    // "sourceMap": true,                        /* sourceMap的值为true或false，用来指定编译时是否生成.map文件 */
+    "outDir": "dist",                         /* outDir用来指定输出文件夹，值为一个文件夹路径字符串，输出的文件都将放置在这个文件夹 */
+    // "outFile": "./",                       /* outFile用于指定将输出文件合并为一个文件，它的值为一个文件路径名。比如设置为"./dist/main.js"，则输出的文件为一个main.js文件。但是要注意，只有设置module的值为amd和system模块时才支持这个配置 */
+    "rootDir": "src",                         /* 用来指定编译文件的根目录，编译器会在根目录查找入口文件，如果编译器发现以rootDir的值作为根目录查找入口文件并不会把所有文件加载进去的话会报错，但是不会停止编译 */
+    // "importHelpers": true,                 /* 从tslib导入辅助工具函数(如__importDefault)*/
+    "strict": false,                           /* 严格模式开关 等价于noImplicitAny、strictNullChecks、strictFunctionTypes、strictBindCallApply等设置true */
+    "noUnusedLocals": true,                   /* 未使用局部变量报错*/
+    "noUnusedParameters": true,               /* 未使用参数报错*/
+    "noImplicitReturns": true,                /* 有代码路径没有返回值时报错*/
+    "noFallthroughCasesInSwitch": true,       /* 不允许switch的case语句贯穿*/
+    "moduleResolution": "node",               /* 模块解析策略 */
+    "typeRoots": [                            /* 要包含的类型声明文件路径列表*/
+      "./node_modules/@types"
+      ],
+    "allowSyntheticDefaultImports": true,    /* 允许从没有设置默认导出的模块中默认导入，仅用于提示，不影响编译结果*/
+    "esModuleInterop": true,                  // 允许export=导出，由import from 导入       
+    // "inlineSourceMap":true,                // 生成目标文件的inline SourceMap，inline SourceMap会包含在生成的js文件中
+    "noImplicitThis": true,                   // 不允许this有隐式的any类型
+    "baseUrl": "./",
+    "paths": {                                // 路径映射，相对于baseUrl
+      "*": ["src/*"]
+    }
+  },
+  "include": [                                /* 需要编译的文件 */
+    "src/*.ts",
+  ],
+  "exclude": [                                /* 编译需要排除的文件 */
+    "dist",
+    "node_modules",
+    "test"
+  ]
+}
