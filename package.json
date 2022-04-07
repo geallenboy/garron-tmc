@@ -6,6 +6,14 @@
   "bin": {
     "tmc-cli": "./bin/ts-cli.js"
   },
+  "author": {
+    "name": "garron",
+    "url": "https://github.com/geallenboy"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "prepare": "husky install",
@@ -13,9 +21,9 @@
     "lint:eslint": "eslint --cache --max-warnings 0 \"src/**/*.ts\" --fix",
     "lint:prettier": "prettier --write  \"src/**/*.ts\""
   },
-  "author": "garron",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "@garron/standard": "^1.4.1",
     "@types/inquirer": "^8.2.1",
