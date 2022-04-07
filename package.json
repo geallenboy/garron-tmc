@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "prepare": "husky install",
+    "lint:lint-staged": "lint-staged",
     "lint:eslint": "eslint --cache --max-warnings 0 \"src/**/*.ts\" --fix",
     "lint:prettier": "prettier --write  \"src/**/*.ts\""
   },
