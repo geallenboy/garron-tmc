@@ -9,7 +9,7 @@ import {
 } from './boilerplate';
 import { downInit } from './download';
 import { projectDir } from './config';
-import { askChoiceType,boilerplateAnswerType,askProjectChoiceType,projectType } from './type';
+import { askChoiceType,boilerplateAnswerType,askProjectChoiceType,projectType,projectInfoAnswerType } from './type';
 
 /**
  * init
@@ -42,14 +42,11 @@ export const actionInit = async () => {
     const boilerplateDetailAnswer:projectType = await inquirer.prompt(boilerplateDetailAsk);
     const project:string = boilerplateDetailAnswer.project;
     const bilerplateInfo:askChoiceType = getBoilerplateDetailInfo(askDetailChoice, boilerplateName, project);
-   
     const projectInfoChoice:askProjectChoiceType[] = getProjectAskChoices(
       askProjectChoice,
       bilerplateInfo.choices || choices,
     );
-   
-    const projectInfoAnswer = await inquirer.prompt(projectInfoChoice);
-    console.log(projectInfoAnswer,222)
-    // await downInit(projectDir, bilerplateInfo, projectInfoAnswer);
+    const projectInfoAnswer:projectInfoAnswerType = await inquirer.prompt(projectInfoChoice);
+    await downInit(projectDir, bilerplateInfo, projectInfoAnswer);
   }
 };
