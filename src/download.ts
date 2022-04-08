@@ -25,18 +25,6 @@ export const updatePackageFile = (fileDir: string, info: any) => {
   packageJSON.description = description || packageJSON.description;
   writeFile(filepath, packageJSON);
 };
-const writeFile = (filepath: string, content: string | NodeJS.ArrayBufferView) => {
-  try {
-    mkdirp.sync(path.dirname(filepath));
-    fs.writeFileSync(
-      filepath,
-      typeof content === 'string' ? content : JSON.stringify(content, null, 2),
-      'utf8',
-    );
-  } catch (error) {
-    error(`writeFile ${filepath} err`, error);
-  }
-};
 
 /**
  * 获取package信息
@@ -49,11 +37,11 @@ export const getPackageInfo = async (pkgName: any) => {
   const result = await urllib.request(url, {
     dataType: 'json',
     followRedirect: true,
-    timeout: 10000,
+    timeout: 10000
   });
   assert(
     result.status === 200,
-    `npm info ${pkgName} got error: ${result.status}, ${result.data.reason}`,
+    `npm info ${pkgName} got error: ${result.status}, ${result.data.reason}`
   );
   return result.data;
 };
@@ -72,7 +60,7 @@ export const download = async (pkgName: string) => {
   success(`下载中...${tgzUrl}`);
   const response: any = await urllib.request(tgzUrl, {
     streaming: true,
-    followRedirect: true,
+    followRedirect: true
   });
   const targetDir = path.join(tempDir, pkgName);
   await compressing.tgz.uncompress(response.res, targetDir); // 解压
@@ -82,10 +70,9 @@ export const download = async (pkgName: string) => {
 
 /**
  * 下载npm 包
- * @param {*} info
+ * @param {*} npm
  */
-export const installDeps = (info: any) => {
-  const { npm } = info;
+export const installDeps = async (npm: string) => {
   if (npm) {
     const cmd = `${npm} install`;
     const spinner = ora(`start ${cmd}...`);
@@ -118,23 +105,30 @@ export const quickStart = (projectName: string) => {
  * 初始化下载信息
  * @param {sting} root 当前目录
  * @param {object} bilerplateInfo 模版信息
- * @param {object} projectInfoAnswer 项目信息
+ * @param {object} projectInfoAnswer 用户选择项目信息
  */
-export const downInit = async (root: string, bilerplateInfo: askChoiceType, projectInfoAnswer: projectInfoAnswerType) => {
+export const downInit = async (
+  root: string,
+  bilerplateInfo: askChoiceType,
+  projectInfoAnswer: projectInfoAnswerType
+) => {
   const { pkgName, value } = bilerplateInfo;
-  const { name } = projectInfoAnswer;
+  const { name, npm, packages } = projectInfoAnswer;
   const projectName = name || value || pkgName;
+  console.log(projectName, npm, packages, root);
   const absSourceDir = await download(pkgName); // 获取下载本地缓存目录
   const absTargetDir = path.join(root, projectName); // 下载到当前目录
   await mkdirp(absTargetDir); // 创建当前目录
   copy(absSourceDir, absTargetDir); // 本地缓存目录复制到当前目录
   updatePackageFile(absTargetDir, projectInfoAnswer); // 更新package内部信息
   success(`初始化 ${projectName} 项目成功!\r\n`);
-  // installDeps(absTargetDir);
+  if (packages === 'yes') {
+    installDeps(npm);
+  }
   quickStart(projectName);
 };
 
-const copy = (sourceDir: string, targetDir: string, option = { dir: '', hide: true }) => {
+export const copy = (sourceDir: string, targetDir: string, option = { dir: '', hide: true }) => {
   if (option.dir) {
     shell.cp('-R', path.join(sourceDir, option.dir), targetDir);
   } else {
@@ -145,6 +139,57 @@ const copy = (sourceDir: string, targetDir: string, option = { dir: '', hide: tr
       } catch (e) {
         console.warn('copy hide file error', e);
       }
+    }
+  }
+};
+export const writeFile = (filepath: string, content: string | NodeJS.ArrayBufferView) => {
+  try {
+    mkdirp.sync(path.dirname(filepath));
+    fs.writeFileSync(
+      filepath,
+      typeof content === 'string' ? content : JSON.stringify(content, null, 2),
+      'utf8'
+    );
+  } catch (error) {
+    error(`writeFile ${filepath} err`, error);
+  }
+};
+
+/**
+ * 读取文件
+ * @param {string} filepath 文件路径
+ * @returns {Object}
+ */
+export const readFile = (filepath) => {
+  try {
+    if (fs.existsSync(filepath)) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.warn(`readFile ${filepath} err`, error);
+    return false;
+  }
+};
+/**
+ * 删除文件
+ * @param {string} filepath 路径名称
+ */
+export const deleteFile = (filepath) => {
+  if (fs.existsSync(filepath)) {
+    if (fs.statSync(filepath).isDirectory) {
+      const files = fs.readFileSync(filepath);
+      files.forEach((file: any) => {
+        const curPath = path.join(filepath, file);
+        if (fs.statSync(curPath).isDirectory) {
+          exports.deleteFile(curPath);
+        } else {
+          fs.unlinkSync(curPath);
+        }
+      });
+      fs.unlinkSync(filepath);
+    } else {
+      fs.unlinkSync(filepath);
     }
   }
 };

@@ -1,42 +1,43 @@
 export interface askChoiceType {
-  name:string;
-  value:string;
-  pkgName?:string;
-  choices?:Array<string>
+  name: string;
+  value: string;
+  pkgName?: string;
+  choices?: Array<string>;
 }
 
 export interface proNameType {
-  name:string;
-  cmd:string;
+  name: string;
+  cmd: string;
 }
 
 export interface projectInfoAnswerType {
-  name:string;
-  description:string;
-  npm:string;
+  name: string;
+  description: string;
+  npm: string;
+  packages?: string;
 }
 
 export interface boilerplateAnswerType {
-  boilerplateName:string
+  boilerplateName: string;
 }
 
 export interface choicesItemType {
-  name:string;
-  value:string;
-  checked?:boolean
+  name: string;
+  value: string;
+  checked?: boolean;
 }
 
 export interface askProjectChoiceType {
-  type:string;
-  name:string;
-  message:string;
-  choices?:choicesItemType[]
+  type: string;
+  name: string;
+  message: string;
+  choices?: choicesItemType[];
 }
 
 export interface projectType {
-  project:string
+  project: string;
 }
 
 export interface askDetailChoiceType {
-  [key:string]:askChoiceType[]
+  [key: string]: askChoiceType[];
 }
