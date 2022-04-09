@@ -6,19 +6,19 @@
 
 # production
 /dist
-/lib
+/.vscode
 
 # misc
 .DS_Store
-npm-debug.log*
+npm-debug.log* 
 yarn-error.log
 .npmignore
 /coverage.
 .idea
 yarn.lock
-**/package-lock.json
+package-lock.json
 *bak
-
+.vscode
 
 # visual studio code
 .history
